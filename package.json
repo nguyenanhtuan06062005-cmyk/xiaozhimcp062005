@@ -1,0 +1,11 @@
+{
+  "name": "xiaozhi-render",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "XIAOZHI_CONFIG=/app/xiaozhi.config.json xiaozhi start"
+  },
+  "dependencies": {
+    "xiaozhi-client": "^1.7.8"
+  }
+}
+

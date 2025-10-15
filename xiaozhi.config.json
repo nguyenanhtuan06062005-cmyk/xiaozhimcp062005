@@ -1,0 +1,210 @@
+{
+  "mcpServers": {
+    "world-news-api": {
+      "command": "node",
+      "args": [
+        "/app/world-news-api-mcp/dist/index.js"
+      ]
+    },
+    "google-search": {
+      "command": "node",
+      "args": [
+        "/app/mcp-google-custom-search-server/build/index.js"
+      ],
+      "env": {
+        "GOOGLE_API_KEY": "AIzaSyBajXnKCl9F4OSJPuyYtD5rdGF4kudVoJw",
+        "GOOGLE_SEARCH_ENGINE_ID": "644bdb83cdb2f4d31"
+      }
+    }
+  },
+  "customMCP": {
+    "world-news-api": {
+      "title": "🌍 World News API",
+      "description": "Real-time global news with AI-powered categorization and source metadata.",
+      "tools": [
+        {
+          "name": "get_latest_headlines",
+          "description": "Retrieve the latest world news headlines across categories and countries",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string",
+                "description": "The category of news to fetch (e.g., business, sports, technology)"
+              },
+              "language": {
+                "type": "string",
+                "description": "Language code (e.g., en, fr, vi)"
+              },
+              "country": {
+                "type": "string",
+                "description": "Country code (e.g., us, gb, vn)"
+              },
+              "limit": {
+                "type": "number",
+                "description": "Max number of results to return"
+              }
+            },
+            "required": ["category"]
+          }
+        },
+        {
+          "name": "search_news_by_keyword",
+          "description": "Search news articles by keyword with optional filters",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Keyword to search for"
+              },
+              "language": {
+                "type": "string",
+                "description": "Language code (e.g., en, vi, fr)"
+              },
+              "sort": {
+                "type": "string",
+                "description": "Sorting order (relevance, date)"
+              },
+              "from": {
+                "type": "string",
+                "description": "Start date (YYYY-MM-DD)"
+              },
+              "to": {
+                "type": "string",
+                "description": "End date (YYYY-MM-DD)"
+              }
+            },
+            "required": ["query"]
+          }
+        },
+        {
+          "name": "get_news_by_country",
+          "description": "Retrieve latest top news by country code",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "country": {
+                "type": "string",
+                "description": "Country code (e.g., us, gb, fr, vn)"
+              },
+              "category": {
+                "type": "string",
+                "description": "Optional category filter"
+              },
+              "limit": {
+                "type": "number",
+                "description": "Max number of results"
+              }
+            },
+            "required": ["country"]
+          }
+        },
+        {
+          "name": "analyze_sentiment_of_article",
+          "description": "Analyze the sentiment of a given article text",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "The content of the news article"
+              }
+            },
+            "required": ["text"]
+          }
+        },
+        {
+          "name": "summarize_news_article",
+          "description": "Summarize a long news article text using AI",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "The URL of the article to summarize"
+              },
+              "length": {
+                "type": "string",
+                "description": "Summary length: short, medium, long"
+              }
+            },
+            "required": ["url"]
+          }
+        },
+        {
+          "name": "detect_fake_news",
+          "description": "Detect potential fake news content based on linguistic and metadata analysis",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Title of the article"
+              },
+              "content": {
+                "type": "string",
+                "description": "Body text of the article"
+              }
+            },
+            "required": ["title", "content"]
+          }
+        },
+        {
+          "name": "categorize_news",
+          "description": "Categorize a news article into predefined topics",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "News article content to classify"
+              }
+            },
+            "required": ["text"]
+          }
+        },
+        {
+          "name": "track_trending_topics",
+          "description": "Track trending topics globally or by region",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "region": {
+                "type": "string",
+                "description": "Optional region or country code"
+              },
+              "limit": {
+                "type": "number",
+                "description": "Number of topics to return"
+              }
+            }
+          }
+        },
+        {
+          "name": "get_publisher_info",
+          "description": "Retrieve detailed information about a specific news publisher",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "Name or domain of the publisher"
+              }
+            },
+            "required": ["source"]
+          }
+        }
+      ]
+    }
+  },
+  "connection": {
+    "heartbeatInterval": 30000,
+    "heartbeatTimeout": 10000,
+    "reconnectInterval": 5000
+  },
+  "webUI": {
+    "port": 10000
+  }
+}
+

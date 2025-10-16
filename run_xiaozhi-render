@@ -1,0 +1,64 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# =============================================
+# Auto setup & start Xiaozhi + MCP services
+# For Android Termux
+# Author: GPT-5 setup script for Nguyen Anh Tuan
+# =============================================
+
+set -e
+
+echo "🚀 Bắt đầu khởi động Xiaozhi + MCP..."
+sleep 1
+
+# === Cập nhật Termux & cài Node.js + Git + Python nếu chưa có ===
+pkg update -y && pkg upgrade -y
+pkg install -y nodejs git python wget curl
+
+# === Clone repo Xiaozhi-render ===
+if [ ! -d "$HOME/xiaozhi-render" ]; then
+  echo "📦 Tải mã nguồn từ GitHub..."
+  git clone https://github.com/nguyenanhtuan2005/xiaozhi-render.git $HOME/xiaozhi-render
+fi
+cd $HOME/xiaozhi-render
+
+# === Cài đặt dependencies MCP ===
+echo "📥 Cài các package MCP..."
+cd $HOME/mcp-google-custom-search-server && npm install
+cd $HOME/world-news-api-mcp && npm install
+
+# === Quay lại thư mục chính ===
+cd $HOME/xiaozhi-render
+
+# === Kiểm tra file cấu hình Xiaozhi ===
+if [ ! -f "$HOME/xiaozhi.config.json" ]; then
+  echo "⚠️ Không thấy file cấu hình ~/xiaozhi.config.json, đang tải về..."
+  wget -O $HOME/xiaozhi.config.json https://raw.githubusercontent.com/nguyenanhtuan2005/xiaozhi-render/main/xiaozhi.config.json
+fi
+
+# === Cài đặt Xiaozhi client nếu chưa có ===
+if ! command -v xiaozhi &> /dev/null; then
+  echo "📦 Đang cài Xiaozhi client..."
+  npm install -g xiaozhi-client
+fi
+
+# === Khởi chạy các MCP server ===
+echo "🛰️ Khởi động MCP Google Custom Search..."
+node /home/nguyenanhtuan2005/mcp-google-custom-search-server/build/index.js &
+GOOGLE_PID=$!
+
+echo "🛰️ Khởi động MCP World News API..."
+node /home/nguyenanhtuan2005/world-news-api-mcp/dist/index.js &
+NEWS_PID=$!
+
+sleep 3
+
+# === Khởi chạy Xiaozhi chính ===
+echo "🤖 Khởi động Xiaozhi client..."
+export XIAOZHI_CONFIG=$HOME/xiaozhi.config.json
+xiaozhi start &
+
+# === Giữ tiến trình chạy mãi ===
+echo "✅ Tất cả dịch vụ đã khởi động xong!"
+echo "🟢 Xiaozhi đang chạy nền với MCP Google + World News."
+echo "Nhấn CTRL+C để dừng toàn bộ."
+wait $GOOGLE_PID $NEWS_PID

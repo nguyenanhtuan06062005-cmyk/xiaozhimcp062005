@@ -1,19 +1,23 @@
 {
-  "mcpServers": {
-    "world-news-api": {
-      "command": "node",
-      "args": [
-        "/app/world-news-api-mcp/dist/index.js"
-      ]
-    },
-    "google-search": {
-      "command": "node",
-      "args": [
-        "/app/mcp-google-custom-search-server/build/index.js"
-      ],
-      "env": {
-        "GOOGLE_API_KEY": "AIzaSyBajXnKCl9F4OSJPuyYtD5rdGF4kudVoJw",
-        "GOOGLE_SEARCH_ENGINE_ID": "644bdb83cdb2f4d31"
+  "mcp": {
+    "servers": {
+      "world-news-api": {
+        "command": "node",
+        "args": [
+          "/data/data/com.termux/files/home/world-news-api-mcp/dist/index.js"
+        ],
+        "transport": "stdio"
+      },
+      "google-search": {
+        "command": "node",
+        "args": [
+          "/data/data/com.termux/files/home/mcp-google-custom-search-server/build/index.js"
+        ],
+        "env": {
+          "GOOGLE_API_KEY": "AIzaSyBajXnKCl9F4OSJPuyYtD5rdGF4kudVoJw",
+          "GOOGLE_SEARCH_ENGINE_ID": "644bdb83cdb2f4d31"
+        },
+        "transport": "stdio"
       }
     }
   },
